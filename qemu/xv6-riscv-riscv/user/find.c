@@ -43,7 +43,6 @@ int find(char *fileName, char *path)
 		}
 		if (st.type == 1)
 		{
-			//printf("%s,type = 1\n", de.name);
 			flag = find(fileName, buf);
 		}
 			
@@ -74,7 +73,6 @@ int main(int argc, char *argv[])
 	char path[2] = ".";
 
 	strcpy(fileName, argv[2]);
-	//printf("%s\n", fileName);
 	val = find(fileName, path);
 	if (val == 0)
 	{
