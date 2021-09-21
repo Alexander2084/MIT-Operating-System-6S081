@@ -48,7 +48,7 @@ int find(char *fileName, char *path)
 			
 		else if (st.type == 3)
 			continue;
-		else
+		else if (st.type == 2)
 		{
 			if (strcmp(de.name, fileName) == 0)
 			{
