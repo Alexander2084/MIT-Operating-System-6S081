@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	}
 	char stdInput[MAXARG];
 	read(0, stdInput, MAXARG);	
-
+//	printf("%s, size:%d", stdInput,strlen(stdInput));
 	int i = 0;
 	int j = 0;
 	char *p = stdInput;
@@ -37,18 +37,23 @@ int main(int argc, char *argv[])
 	{
 		newArgs[j++] =  argv[i];
 	}
+	//printf("%c\n", *p);
 	while (*p != '\0')
 	{
 		if (*p == ' ' || *p == '\n')
 		{
-			newArgs[j] = (char *)malloc(p - start + 1);
-			*p = '\0';
+			newArgs[j] = (char *)malloc(32);
 			memmove(newArgs[j], start, p - start + 1);
+			newArgs[j][strlen(newArgs[j])] = '\0';
 			j++;
 			start = p + 1;
 
 			if (*p == '\n')
 			{
+			//	for (int k = 0; k < j;k++)
+			//	{
+			//		printf("%s ", newArgs[k]);
+			//	}
 				forkoff(argv[1], newArgs);
 				for (int k = argc - 2;k < j; k++)
 				{
@@ -57,8 +62,8 @@ int main(int argc, char *argv[])
 				j = argc - 2;
 			}
 
-			p++;
 		}
+		p++;
 	
 	}
 
