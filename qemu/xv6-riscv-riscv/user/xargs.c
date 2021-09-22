@@ -15,7 +15,6 @@ void forkoff(char *command, char *arguments[])
 		exec(command, arguments);
 	}
 	wait(&pid);
-	exit(0);
 }
 int main(int argc, char *argv[])
 {
@@ -24,49 +23,54 @@ int main(int argc, char *argv[])
 		fprintf(2, "Too few arguments\n");
 		exit(1);
 	}
-	char stdInput[MAXARG];
-	read(0, stdInput, MAXARG);	
-//	printf("%s, size:%d", stdInput,strlen(stdInput));
+	int m = 0;
 	int i = 0;
 	int j = 0;
-	char *p = stdInput;
-	stdInput[strlen(stdInput)] = '\0';
-	char *start = p;
+
+	char stdInput[MAXARG][100];
 	char *newArgs[MAXARG];
-	for (i = 2; i < argc; i++)
+	for (i = 1; i < argc; i++)
 	{
 		newArgs[j++] =  argv[i];
 	}
-	//printf("%c\n", *p);
-	while (*p != '\0')
+	while(read(0, stdInput[m], MAXARG))
 	{
+	//	printf("%s,size:%d, m:%d\n", stdInput[m],strlen(stdInput[m]), m);
+	//	m++;
+		char *p = stdInput[m];
+		char *start = p;
+		m++;
+		while (*p != '\0')
+		{
 		if (*p == ' ' || *p == '\n')
 		{
-			newArgs[j] = (char *)malloc(32);
+			newArgs[j] = (char *)malloc(p - start + 1);
 			memmove(newArgs[j], start, p - start + 1);
-			newArgs[j][strlen(newArgs[j])] = '\0';
+			newArgs[j][strlen(newArgs[j]) - 1] = '\0';
 			j++;
 			start = p + 1;
 
 			if (*p == '\n')
 			{
-			//	for (int k = 0; k < j;k++)
-			//	{
-			//		printf("%s ", newArgs[k]);
-			//	}
+				/*for (int k = 0; k < j;k++)
+				{
+					printf("%s ", newArgs[k]);
+				}
+				printf("\n");*/
 				forkoff(argv[1], newArgs);
-				for (int k = argc - 2;k < j; k++)
+				for (int k = argc - 1;k < j; k++)
 				{
 					free(newArgs[k]);
 				}
-				j = argc - 2;
+				j = argc - 1;
 			}
 
 		}
 		p++;
 	
-	}
+		}
 
+	}
 
 	exit(0);
 }

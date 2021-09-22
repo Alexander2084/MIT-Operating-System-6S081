@@ -8,7 +8,7 @@ int find(char *fileName, char *path)
 	int fd;
 	struct stat st;
 	int flag = 0;
-	char buf[strlen(path) + DIRSIZ + 2];
+	char buf[strlen(path) + DIRSIZ + 3];
 	char *p;
 
 	if ((fd = open(path, 0)) < 0)
@@ -52,7 +52,9 @@ int find(char *fileName, char *path)
 		{
 			if (strcmp(de.name, fileName) == 0)
 			{
-				printf("%s/%s\n",path, fileName);
+				buf[strlen(buf)] = '\n';
+				buf[strlen(buf) + 1] = '\0';
+				write(1, buf, strlen(buf));
 				flag = 1;
 			}
 		}
